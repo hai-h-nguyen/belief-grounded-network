@@ -36,15 +36,15 @@ This is the repo stored the code for our paper [Belief-Grounded Network for Acce
     * `bench/monitor.py` - adding discounted reward calculation
     * `common/vec_env/dummy_vec_env.py` - adding get states and get belief functions
     * `common/vec_env/shmem_vec_env.py` - adding get states and get belief functions
-  - Modify line 96 in `gym-pomdps\gym_pomdps\pomdp.py` from `state_next = -1` to `state_next = self.state_space.n`
+  - Modify line 96 in `gym-pomdps/gym_pomdps/pomdp.py` from `state_next = -1` to `state_next = self.state_space.n`
 
 ---
 
 ## Train
 
-* algo-name: `ab-cb, ah-cb, ah-ch, ah-cs, bc` for any domain
+* algo-name: `ab-cb, ah-cb, ah-ch, ah-cs` for any domain
 * domain-name: `PomdpHallway-v0, PomdpHallway-v2, PomdpRs44-v0, PomdpRS55-v0, MomdpBumps-v0, MomdpPlates-v0, MomdpTopPlate-v0`
-* running-mode: train, simulate (a saved policy file or a random agent), or clone an ab-cb epxert (need to have a policy file and an experience file saved before)
+* running-mode: train, simulate
 * Command (tee is to save the output to a file for plotting later): 
   * Train: 
   ```
@@ -58,7 +58,7 @@ This is the repo stored the code for our paper [Belief-Grounded Network for Acce
   ```
   python3 -u main.py --algo ah-ch --num-env-steps num-steps --seed 0 --env-name name --running-mode train --belief-loss-coef 1.0 | tee log.txt
   ```
-  * For all training commands, the policy will be autonomously saved at `scripts/logs/env-name/algo-name.seed.mdl`
+* For all training commands, the policy will be autonomously saved at `scripts/logs/env-name/algo-name.seed.mdl`
 
 ---
 
@@ -66,7 +66,7 @@ This is the repo stored the code for our paper [Belief-Grounded Network for Acce
 
 * Plot using the script in folder `plot` which takes `file.txt` as the input with the option to plot training and/or validating results:
   * Plot a folder for a domain: sub-folders must have names such as `ahcb, abcb, ahcs, ahch, gbn`: `python3 plot_folder.py --folder hallway --window 10 --mode training/testing`
-  * Plot multiple folders corresponding to four domains: 
+  * Plot multiple folders: 
   ```
   python3 plot_folders.py --folder hallway hallway2 rs44 rs55 --window 10 10 10 10 --mode testing testing training training
   ```
@@ -75,7 +75,7 @@ This is the repo stored the code for our paper [Belief-Grounded Network for Acce
 
 ## License
 
-This code is released under the MIT License.
+This code is released under the [MIT License](https://github.com/hai-h-nguyen/belief-grounded-network/blob/master/LICENSE).
 
 ---
 
