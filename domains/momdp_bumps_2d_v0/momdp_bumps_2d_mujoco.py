@@ -293,6 +293,8 @@ class MomdpBumps2dV0(gym.Env):
 
         info = {'curr_state': self.get_state(), 'belief': self.get_belief()}
 
+        info['reward_cat'] = reward
+
         state = State(x_g=self.x_g, y_g=self.y_g, theta=self.theta,
                                  x_bump1=self.x_bump1, y_bump1=self.y_bump1,
                                  x_bump2=self.x_bump2, y_bump2=self.y_bump2)        

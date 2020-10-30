@@ -11,7 +11,7 @@ import gym
 
 plt.style.use('ggplot')
 
-env = gym.make(id='MomdpPlates-v0', rendering=False)
+env = gym.make(id='MomdpTopPlate-v1', rendering=True)
 belief = None
 
 for i in range(10):

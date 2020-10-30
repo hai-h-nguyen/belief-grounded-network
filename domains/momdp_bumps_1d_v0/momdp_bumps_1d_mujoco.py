@@ -155,7 +155,9 @@ class MomdpBumps1dV0(gym.Env):
 
         # Debug
         self.transitions = []
-        self.debug_belief = True
+
+        # Turn it on to log the true belief
+        self.debug_belief = False
 
 
         self.traj_cnt = 0
@@ -275,6 +277,8 @@ class MomdpBumps1dV0(gym.Env):
 
         obs = np.array((self.x_g / self.x_g_right_limit, self.theta / self.max_theta, float(action / self.norm_action)))
         info = {'curr_state': self.get_state(), 'belief': self.get_belief()}
+
+        info['reward_cat'] = reward
 
         self.transitions.append([self.x_g, self.theta, self.x_bump1, self.x_bump2, action])
 

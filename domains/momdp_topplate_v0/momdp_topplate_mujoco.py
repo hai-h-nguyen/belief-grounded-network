@@ -109,7 +109,7 @@ class MomdpTopPlateV0(gym.Env):
 
         # States and Obs
         self.num_plate_selected = 0
-        self.discount = 0.99
+        self.discount = 1.0
         self.observation_space = spaces.Box(low=-float('inf'), high=float('inf'), shape=(3,), dtype=np.float32)
         self.z_g_down_limit = self.z_down_limit
         self.z_g_up_limit = self.z_up_limit
@@ -121,7 +121,7 @@ class MomdpTopPlateV0(gym.Env):
         self.start_belief = self._generate_start_belief()
         self.belief = np.zeros((self.num_z_slots, 1))
 
-        self.debug = True
+        self.debug = False
 
         # numpy random
         self.np_random = None
@@ -207,6 +207,7 @@ class MomdpTopPlateV0(gym.Env):
         obs = np.array(
             [self.z_g / self.z_up_limit, self.theta / self.max_theta, float(action / self.norm_action)])
         info = {'curr_state': self.get_state(), 'belief': self.get_belief()}
+        info['reward_cat'] = reward
 
         if self.debug:
             print(self.action_str[action], self.z_g, self.angle_str[self.theta], self.z_t)

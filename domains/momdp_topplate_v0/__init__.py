@@ -1,1 +1,2 @@
 from gym.envs.momdp_topplate_v0.momdp_topplate_mujoco import MomdpTopPlateV0
+from gym.envs.momdp_topplate_v0.momdp_topplate_mujoco_v1 import MomdpTopPlateV1
