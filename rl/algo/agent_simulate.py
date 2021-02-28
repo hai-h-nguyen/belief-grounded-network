@@ -29,7 +29,7 @@ class SimulateAgent:
         self.rollouts = RolloutStorage(self.args, self.config, self.actor_critic.rnn_state_size, self.is_embed)
 
         # Turn this on to save reconstructed beliefs to text files
-        self.log_est_belief = True
+        self.log_est_belief = False
         self.traj_cnt = 0
 
         if self.log_est_belief:
