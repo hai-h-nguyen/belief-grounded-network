@@ -109,3 +109,14 @@ class AHCS(ActorCriticMethod):
                 rollouts.actor_rnn_states[0].view(-1, self.actor_critic.rnn_state_size),
                 rollouts.masks[:-1].view(-1, 1),
                 rollouts.actions.view(-1, action_shape))
+
+
+class ASCS(ActorCriticMethod):
+    def _prepare_inputs(self, rollouts):
+        action_shape = rollouts.actions.size()[-1]
+        return (rollouts.state[:-1].view(-1, self.state_dim),
+                rollouts.state[:-1].view(-1, self.state_dim),
+                rollouts.actor_rnn_states[0].view(-1, self.actor_critic.rnn_state_size),
+                rollouts.critic_rnn_states[0].view(-1, self.actor_critic.rnn_state_size),
+                rollouts.masks[:-1].view(-1, 1),
+                rollouts.actions.view(-1, action_shape))

@@ -8,10 +8,9 @@ import sys
 import pickle
 import bz2
 import dill
-import gzip
 from copy import deepcopy
 
-from .actor_critic_methods import ABCB, AHCB, AHCH, AHCS
+from .actor_critic_methods import ABCB, AHCB, AHCH, AHCS, ASCS
 from .bc import BehaviorClone
 
 from rl.nn import A2CAsym, A2C, A2CAsymDual
@@ -66,17 +65,21 @@ class Agent:
             self.actor_critic = A2CAsym(self.config, actor_recurrent=True, use_embedding=self.should_embed).to(self.device)
             self.agent = AHCS(self.actor_critic, self.args, self.config)
 
-
         if algo == 'ab-cb':  # Belief actor, belief critic
             dims = (self.config['belief_dim'], self.config['belief_dim'], self.config['action_size'], self.config['n_known_states'])
             self.actor_critic = A2CAsymDual(dims, critic_recurrent=False, actor_recurrent=False, use_embedding=False).to(self.device)
             self.agent = ABCB(self.actor_critic, self.args, self.config)
 
+        if algo == 'as-cs':  # true-state actor, true-state critic
+            dims = (self.config['state_dim'], self.config['state_dim'], self.config['action_size'], self.config['n_known_states'])
+            self.actor_critic = A2CAsymDual(dims, critic_recurrent=False, actor_recurrent=False, use_embedding=False, embed_actions=False).to(self.device)
+            self.agent = ASCS(self.actor_critic, self.args, self.config)
+
         if algo == 'bc':  # Behavioral cloning
-            dims = (self.config['belief_dim'], self.config['belief_dim'], self.config['action_size'])
+            dims = (self.config['belief_dim'], self.config['belief_dim'], self.config['action_size'], self.config['n_known_states'])
             self.cloner = BC(self.config, use_embedding=self.should_embed).to(self.device)
             self.clone_agent = BehaviorClone(self.cloner, self.args, self.config)
-            self.actor_critic = A2CAsymDual(dims, actor_recurrent=False, critic_recurrent=False, use_embedding=self.should_embed).to(self.device)
+            self.actor_critic = A2CAsymDual(dims, actor_recurrent=False, critic_recurrent=False, use_embedding=self.should_embed, embed_actions=False).to(self.device)
 
         if algo == 'ah-cb':  # Recurrent actor, belief critic
             if not self.should_embed:
@@ -92,6 +95,10 @@ class Agent:
                     self.config['action_size'], self.config['belief_dim'], self.config['n_known_states'])            
             self.actor_critic = A2C(dims, n_reactive, recurrent=True, use_embedding=self.should_embed).to(self.device)
             self.agent = AHCH(self.actor_critic, self.args, self.config)
+
+            if self.args.policy_file is not None:
+                self.actor_critic = torch.load(self.args.policy_file)
+                print("Load pre-trained policy")
 
 
         if algo == 'af-cf':  # Reactive actor, reactive critic (i.e. fixed-length memory)
@@ -163,11 +170,15 @@ class Agent:
         self.compute_returns()
         self.value_loss, self.action_loss, self.dist_entropy = self.agent.update(self.rollouts)
 
-        if self.args.algo in ['ab-cb'] and self.args.save_transitions:
+        # Only supports these types of experts
+        if self.args.algo in ['ab-cb', 'as-cs'] and self.args.save_transitions:
             with torch.no_grad():
-                self.experience_mem.append([self.rollouts.obs.clone().numpy(), self.rollouts.masks.clone().numpy(), 
+                self.experience_mem.append([self.rollouts.obs.clone().numpy(), 
+                                            self.rollouts.masks.clone().numpy(), 
                                             self.rollouts.belief.clone().numpy(), 
-                                            self.rollouts.actions.clone().numpy()])
+                                            self.rollouts.actions.clone().numpy(), 
+                                            self.rollouts.state.clone().numpy(),
+                                            ])
 
             if n_update == num_updates - 1 or (n_update % 1000 == 0 and n_update > 0):
                 print("Saving ...")
@@ -186,6 +197,7 @@ class Agent:
 
         # Load expert
         self.actor_critic = torch.load(self.args.policy_file)
+        self.actor_critic.eval()
 
         # Load transitions
         pickle_file = bz2.BZ2File(self.args.transitions_file, 'rb')
@@ -195,12 +207,24 @@ class Agent:
         for i in tqdm(range(len(self.experience_mem))):
             for step in range(self.args.num_steps):
                 with torch.no_grad():
+
+                    # Ab-Cb expert, input_idx=2 is beliefs
                     actions = self.actor_critic.act_simple(self.experience_mem[i], step, self.args, 
+                                                            input_idx=2, 
                                                             deterministic=True)
+
+                    # Override old actions w/ expert actions                                                   
                     self.experience_mem[i][3][step] = actions.clone()
+
         print("Done!")
 
         self.data_loader = DataLoader(self.experience_mem, batch_size=self.args.bc_batch_size, shuffle=True, drop_last=True)
+
+    def load_expert_data(self):
+        # Load transitions
+        pickle_file = bz2.BZ2File(self.args.transitions_file, 'rb')
+        self.experience_mem = pickle.load(pickle_file)
+        self.data_loader = DataLoader(self.experience_mem, batch_size=self.args.bc_batch_size, shuffle=True, drop_last=True)        
 
     def get_statistic(self):
         return self.episode_rewards, self.value_loss, self.action_loss, self.dist_entropy

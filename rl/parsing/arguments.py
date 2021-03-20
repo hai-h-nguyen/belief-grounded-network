@@ -43,6 +43,16 @@ def get_args():
         type=str,
         default=None)
     parser.add_argument(
+        '--policy-file-e',
+        type=str,
+        default=None, 
+        help='entropy reducing policy')
+    parser.add_argument(
+        '--policy-file-s',
+        type=str,
+        default=None, 
+        help='state policy')
+    parser.add_argument(
         '--transitions-file',
         type=str,
         default=None)        
@@ -90,6 +100,8 @@ def get_args():
         type=int,
         default=10,
         help='log interval, one log per n updates (default: 10)')
+    parser.add_argument('--wandb', default=False, action='store_true')
+    parser.add_argument('--group', type=str, default='test')
     parser.add_argument(
         '--save-interval',
         type=int,

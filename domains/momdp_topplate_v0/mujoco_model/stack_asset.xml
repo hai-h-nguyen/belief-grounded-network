@@ -1,5 +1,0 @@
-<!--# Created by Xinchao Song on May 21, 2020.-->
-
-<mujoco>
-    <mesh name="mesh:stack-stud" file="frames/stack_stud.STL"/>
-</mujoco>

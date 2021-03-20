@@ -4,4 +4,5 @@ from .agent_test import TestAgent
 from .bc_agent_test import TestBCAgent
 from .agent_simulate import SimulateAgent
 from .agent_random import RandomAgent
+from .agent_heuristic import HeuristicAgent
 from .bc import BehaviorClone

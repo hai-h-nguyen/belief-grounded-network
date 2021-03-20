@@ -8,12 +8,18 @@ from rl.nn.envs import should_embed
 from rl.storage import RolloutStorage
 from rl.misc.utils import env_config
 
-class SimulateAgent:
+class CombinedExpertsAgent:
+'''
+This agent is a combination between two experts:
+1. An expert that reduces the entropy of beliefs (pi_e)
+2. An state expert - knows full states (pi_s)
+'''
     def __init__(self, envs, args):
         self.args = args
         self.envs = envs
 
-        assert(self.args.policy_file is not None)
+        assert(self.args.policy_file_e is not None)
+        assert(self.args.policy_file_s is not None)
 
         self.episode_rewards = deque(maxlen=100)
 
@@ -21,20 +27,13 @@ class SimulateAgent:
 
         self.is_embed = should_embed(args.env_name)
 
-        self.actor_critic = torch.load(self.args.policy_file)
+        self.actor_critic_e = torch.load(self.args.policy_file_e)
+        self.actor_critic_s = torch.load(self.args.policy_file_s)
 
         # We want to act in each step
         self.args.num_steps = 1
 
-        self.rollouts = RolloutStorage(self.args, self.config, self.actor_critic.rnn_state_size, self.is_embed)
-
-        # Turn this on to save reconstructed beliefs to text files
-        self.log_est_belief = False
-        self.traj_cnt = 0
-
-        if self.log_est_belief:
-            self.actor_belief_file = open('ab' + str(self.traj_cnt) + ".txt","w")
-            self.critic_belief_file = open('cb' + str(self.traj_cnt) + ".txt","w")
+        self.rollouts = RolloutStorage(self.args, self.config, self.actor_critic_e.rnn_state_size, self.is_embed)
 
         obs = self.envs.reset()
         state = self.envs.get_state()
@@ -50,38 +49,22 @@ class SimulateAgent:
         obs_shape = self.rollouts.obs.size()[2:]
         action_shape = self.rollouts.actions.size()[-1]
         return (self.rollouts.obs[:-1].view(-1, *obs_shape),
-                self.rollouts.actor_rnn_states[0].view(-1, self.actor_critic.rnn_state_size),
+                self.rollouts.actor_rnn_states[0].view(-1, self.actor_critic_e.rnn_state_size),
                 self.rollouts.masks[:-1].view(-1, 1),
                 self.rollouts.actions.view(-1, action_shape))
 
-    def rollout(self, actor_critic):
+    def rollout(self, actor_critic_e, actor_critic_s):
         for step in range(self.args.num_steps):
             # Sample actions
             with torch.no_grad():
-                value, action, action_log_prob, actor_hidden, critic_hidden = actor_critic.act(self.rollouts, step, self.args, deterministic=True)
-                inputs = self._prepare_inputs()
-
-                if self.log_est_belief:
-                    m = nn.Softmax(dim=-1)
-
-                    _, _, _, actor_belief_recon, critic_belief_recon = self.actor_critic.evaluate_actions(*inputs)
-                    actor_belief_recon = m(actor_belief_recon)
-                    actor_belief_recon = actor_belief_recon.numpy().flatten()
-
-                    critic_belief_recon = m(critic_belief_recon)
-                    critic_belief_recon = critic_belief_recon.numpy().flatten()
+                value, action_e, action_log_prob, actor_hidden, critic_hidden = actor_critic_e.act(self.rollouts, step, self.args, deterministic=True)
                 
-                    self.actor_belief_file.write(';'.join(['%.5f' % num for num in actor_belief_recon]) + '\n')
-                    self.critic_belief_file.write(';'.join(['%.5f' % num for num in critic_belief_recon]) + '\n')
+                # _, action_s, _, _, _ = actor_critic_s.act(self.rollouts, step, self.args, deterministic=True)
+
+
 
             # Observe reward and next obs
             obs, reward, done, infos = self.envs.step(action)
-
-            if self.log_est_belief and done:
-                self.traj_cnt += 1
-
-                self.actor_belief_file = open('ab' + str(self.traj_cnt) + ".txt","w")
-                self.critic_belief_file = open('cb' + str(self.traj_cnt) + ".txt","w")
 
             state_ts = torch.empty((self.args.num_processes, self.config['state_dim']), dtype=torch.float)
             belief_ts = torch.empty((self.args.num_processes, self.config['belief_dim']), dtype=torch.float)
@@ -106,7 +89,7 @@ class SimulateAgent:
 
     def simulate(self):
         while len(self.episode_rewards) < 100:
-            self.rollout(self.actor_critic)
+            self.rollout(self.actor_critic_e, self.actor_critic_s)
             self.rollouts.after_update()
 
         self.envs.close()

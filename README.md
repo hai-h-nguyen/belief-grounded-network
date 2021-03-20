@@ -58,9 +58,16 @@ This is the repo stored the code for our paper [Belief-Grounded Network for Acce
   ```
   python3 -u main.py --algo ah-ch --num-env-steps num-steps --seed 0 --env-name name --running-mode train --belief-loss-coef 1.0 | tee log.txt
   ```
+    * Runing behavior cloning: 
+  ```
+  python3 -u main.py --algo bc --num-env-steps num-steps --seed 0 --env-name name --running-mode clone --policy-file file --transitions-file file
+  ```
 * For all training commands, the policy will be autonomously saved at `scripts/logs/env-name/algo-name.#seed.mdl`
 
 ---
+### Generate Heavehell expert trajs
+python3 scripts/heavenhell_expert_trajs.py --env-name PomdpHeavenHell-v0
+
 
 ## Visualize
 

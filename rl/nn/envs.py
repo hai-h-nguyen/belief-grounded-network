@@ -52,7 +52,7 @@ def make_vec_envs(args, allow_early_resets, seed_change=0):
 
 def should_embed(env_name):
     # Classic POMDPs have discrete observations/actions that need to be embedded.
-    # For brevity, we list the environments that do NOT need an embedding here.
+    # return env_name in ['']
     return not('Momdp' in env_name)
 
 # Checks whether done was caused my timit limits or not

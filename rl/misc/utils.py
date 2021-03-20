@@ -98,6 +98,30 @@ def env_config(env_name):
 
         return config
 
+    if env_name in ['PomdpHeavenHell-v0']:
+        config['belief_dim'] = 20
+        config['n_known_states'] = 0
+        config['obs_dim'] = 2
+        config['state_size'] = 20 + 1
+        config['obs_size'] = 11
+        config['action_size'] = 4
+        config['discount'] = 0.99
+        config['state_dim'] = 1
+
+        return config
+
+    if env_name in ['PomdpHeavenHell-v1']:
+        config['belief_dim'] = 36
+        config['n_known_states'] = 0
+        config['obs_dim'] = 2
+        config['state_size'] = 36 + 1
+        config['obs_size'] = 19
+        config['action_size'] = 4
+        config['discount'] = 0.99
+        config['state_dim'] = 1
+
+        return config
+
     if env_name in ['MomdpBumps1d-v0']:
         config['belief_dim'] = 227
         config['n_known_states'] = 2
@@ -120,6 +144,18 @@ def env_config(env_name):
         config['state_dim'] = 7
 
         return config        
+
+    if env_name in ['MomdpBumps2d-v1']:
+        config['belief_dim'] = 628
+        config['n_known_states'] = 0
+        config['obs_dim'] = 4
+        config['state_size'] = 628 + 1
+        config['obs_size'] = -1
+        config['action_size'] = 5
+        config['discount'] = 0.99
+        config['state_dim'] = 7
+
+        return config    
 
     if env_name in ['MomdpTopPlate-v0']:
         config['belief_dim'] = 10

@@ -237,18 +237,34 @@ class BC(nn.Module):
         return action, rnn_hxs
 
 class A2CAsymDual(nn.Module):
-    def __init__(self, dims, critic_recurrent, actor_recurrent, use_embedding, embed_size=128):
+    def __init__(self, dims, critic_recurrent, actor_recurrent, use_embedding, embed_actions=True, embed_size=128):
         super(A2CAsymDual, self).__init__()
         self.use_embedding = use_embedding
+
+        # To deal w/ As-Cs
+        self.embed_actions = embed_actions
+
         action_size = dims[2]
 
-        if use_embedding:
+        if self.use_embedding:
             self.embed_size = embed_size
-            self.action_embed = nn.Embedding(dims[2], embed_size)
+
+            # Only to deal w/ As-Cs for now
+            if self.embed_actions:
+                self.action_embed = nn.Embedding(dims[2], embed_size)
+
             self.obs_embed = nn.Embedding(dims[1], embed_size)
 
-            actor_input_dim = 2 * embed_size
-            critic_input_dim = dims[0]
+            if self.embed_actions:
+                actor_input_dim = 2 * embed_size
+            else:
+                actor_input_dim = embed_size
+
+            # only true for xx-Cb methods
+            if self.embed_actions:
+                critic_input_dim = dims[0]
+            else:
+                critic_input_dim = embed_size
         else:
             actor_input_dim = dims[0]
             critic_input_dim = dims[1]
@@ -267,15 +283,35 @@ class A2CAsymDual(nn.Module):
     def forward(self, inputs, rnn_hxs, masks):
         raise NotImplementedError
 
-    def act_simple(self, rollouts, step, args, deterministic=False):
+    def act_simple(self, rollouts, step, args, input_idx, deterministic=False):
+    # '''
+    # input_idx: the index of rollouts that expert uses to calculate actions
+    # ''' 
         if self.use_embedding:
-            raise NotImplementedError
+            if args.algo in ['bc']:
+
+                inputs_actor = torch.LongTensor(rollouts[input_idx][step])
+                inputs_critic = torch.LongTensor(rollouts[input_idx][step])
+
+                inputs_actor = self._embed_if_needed(inputs_actor)
+                inputs_critic = self._embed_if_needed(inputs_critic)
+        else:
+            inputs_actor = torch.FloatTensor(rollouts[input_idx][step])
+            inputs_critic = torch.FloatTensor(rollouts[input_idx][step])
+
+            # raise NotImplementedError
 
         actor_rnn_hxs = torch.zeros(args.num_processes, self.base.rnn_state_size)
         critic_rnn_hxs = torch.zeros(args.num_processes, self.base.rnn_state_size)
-        inputs_actor = torch.FloatTensor(rollouts[2][step])
-        inputs_critic = torch.FloatTensor(rollouts[2][step])
+
+        # inputs_actor = torch.FloatTensor(rollouts[input_idx][step])
+        # inputs_critic = torch.FloatTensor(rollouts[input_idx][step])
+
         masks = torch.FloatTensor(rollouts[1][step])
+
+        # actor_rnn_hxs = rollouts.actor_rnn_states[step]
+        # critic_rnn_hxs = rollouts.critic_rnn_states[step]
+        # masks = rollouts.masks[step]
 
         value, actor_features, _, actor_rnn_hxs, critic_rnn_hxs = self.base(inputs_actor, inputs_critic, actor_rnn_hxs, critic_rnn_hxs, masks)
         dist = self.dist(actor_features)
@@ -285,21 +321,31 @@ class A2CAsymDual(nn.Module):
         else:
             action = dist.sample()
 
-        action_log_probs = dist.log_probs(action)
-
         return action
 
     def _embed_if_needed(self, obs):
         if not self.use_embedding:
             return obs
-        actions_embedded = self.action_embed(obs[:, 1])
+
+        if self.embed_actions:
+            actions_embedded = self.action_embed(obs[:, 1])
+        
         obs_embedded = self.obs_embed(obs[:, 0])
-        return bind(actions_embedded, obs_embedded).reshape(-1, 2 * self.embed_size)
+
+        if self.embed_actions:
+            return bind(actions_embedded, obs_embedded).reshape(-1, 2 * self.embed_size)
+        else:
+            return obs_embedded.reshape(-1, self.embed_size)
 
     def act(self, rollouts, step, args, deterministic=False):
         if self.use_embedding:
-            inputs_actor = self._embed_if_needed(rollouts.obs[step])
-            inputs_critic = rollouts.belief[step]
+            if args.algo in ['ah-cb']:
+                inputs_actor = self._embed_if_needed(rollouts.obs[step])
+                inputs_critic = rollouts.belief[step]
+
+            if args.algo in ['as-cs']:
+                inputs_actor = self._embed_if_needed(rollouts.state[step])
+                inputs_critic = self._embed_if_needed(rollouts.state[step])
         else:
             if args.algo in ['ab-cb', 'bc']:
                 inputs_actor = rollouts.belief[step]
@@ -308,6 +354,10 @@ class A2CAsymDual(nn.Module):
             if args.algo in ['ah-cb']:
                 inputs_actor = rollouts.obs[step]
                 inputs_critic = rollouts.belief[step]
+
+            if args.algo in ['as-cs']:
+                inputs_actor = rollouts.state[step]
+                inputs_critic = rollouts.state[step]
 
             if args.algo in ['ah-chs']:
                 inputs_actor = rollouts.obs[step]
@@ -335,12 +385,23 @@ class A2CAsymDual(nn.Module):
 
     def get_value(self, rollouts, args):
         if self.use_embedding:
-            inputs_actor = self._embed_if_needed(rollouts.obs[-1])
-            inputs_critic = rollouts.belief[-1]
+
+            if args.algo in ['ah-cb']:
+                inputs_actor = self._embed_if_needed(rollouts.obs[-1])
+                inputs_critic = rollouts.belief[-1]
+
+            if args.algo in ['as-cs']:
+                inputs_actor = self._embed_if_needed(rollouts.state[-1])
+                inputs_critic = self._embed_if_needed(rollouts.state[-1])
+
         else:
             if args.algo in ['ab-cb']:
                 inputs_actor = rollouts.belief[-1]
                 inputs_critic = rollouts.belief[-1]
+
+            if args.algo in ['as-cs']:
+                inputs_actor = rollouts.state[-1]
+                inputs_critic = rollouts.state[-1]
 
             if args.algo in ['ah-cb']:
                 inputs_actor = rollouts.obs[-1]
@@ -363,6 +424,7 @@ class A2CAsymDual(nn.Module):
 
     def evaluate_actions(self, inputs_actor, inputs_critic, actor_rnn_hxs, critic_rnn_hxs, masks, action):
         inputs_actor = self._embed_if_needed(inputs_actor)
+        inputs_critic = self._embed_if_needed(inputs_critic)
         value, actor_features, critic_features, actor_rnn_hxs, critic_rnn_hxs = self.base(inputs_actor, inputs_critic, actor_rnn_hxs, critic_rnn_hxs, masks)
         dist = self.dist(actor_features)
 

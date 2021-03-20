@@ -18,6 +18,7 @@ class BehaviorClone():
         actions = torch.transpose(rollouts[3], 1, 0).reshape(self.num_steps, self.num_processes * self.batch_size, 1)
 
         obs_shape = obs.size()[2:]
+
         alogits, _ = self.cloner.compute_alogits(obs[:-1].view(-1, *obs_shape), 
                                                         masks[:-1].view(-1, 1), self.num_processes * self.batch_size)
         self.cloner_optim.zero_grad()

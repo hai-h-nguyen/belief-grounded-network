@@ -1,5 +1,6 @@
 from rl.misc import utils
 from .clone import CloneEx
+from .imitate import ImitateEx
 from .simulate import SimulateEx
 from .train import TrainEx
 
@@ -35,6 +36,10 @@ class ExperimentManager:
             experiment = SimulateEx(self.args, random_agent=True)
             experiment.run(num_updates)
 
+        if (self.args.running_mode == 'experts'):
+            experiment = SimulateEx(self.args, random_agent=True)
+            experiment.run(num_updates)
+
         if (self.args.running_mode == 'train'):
             experiment = TrainEx(self.args, self.log_dir)
             experiment.run(num_updates, start_time)
@@ -43,4 +48,7 @@ class ExperimentManager:
             experiment = CloneEx(self.args)
             experiment.run()                    
 
+        if (self.args.running_mode == 'imitate'):
+            experiment = ImitateEx(self.args)
+            experiment.run()
 
