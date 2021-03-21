@@ -1,3 +1,4 @@
 *.pyc
+*.mdl
 __pycache__/
 wandb

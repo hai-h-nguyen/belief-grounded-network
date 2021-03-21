@@ -50,7 +50,7 @@ class TestAgent:
                 index += 1
                     
                 if 'episode' in info.keys():
-                    self.episode_rewards.append(info['episode']['r'])
+                    self.episode_rewards.append(info['episode']['r_e'])
 
             # If done then clean the history of observations.
             masks = torch.FloatTensor(
