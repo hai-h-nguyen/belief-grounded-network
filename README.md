@@ -1,6 +1,6 @@
 # Belief-Grounded Networks for Accelerated Robot Learning under Partial Observability
 
-This is the repo stored the code for our paper [Belief-Grounded Network for Accelerated Robot Learning under Partial Observability](https://arxiv.org/abs/2010.09170) accepted at CoRL 2020. This is a joint repo contributed with [Brett](https://github.com/brett-daley) and [Song](https://github.com/xinchaosong). If you use this repository in published work, please cite the paper:
+This is the repo stored the code for our paper [Belief-Grounded Network for Accelerated Robot Learning under Partial Observability](https://arxiv.org/abs/2010.09170) accepted at CoRL 2020. This is a joint repo contributed with [Brett](https://github.com/brett-daley) and [Song](https://github.com/xinchaosong). Project [website](https://sites.google.com/view/bgn-pomdp). If you use this repository in published work, please cite the paper:
 
 ```
 @article{nguyen2020belief,
