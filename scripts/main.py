@@ -19,10 +19,11 @@ def main():
 
     env_name = args.env_name[:-2]
 
-    wandb.init(project=env_name + 'exploration', settings=wandb.Settings(_disable_stats=True),
-                entity='hainh22',
-                group=args.group if args.group is not None else str(args.algo),
-                name='s' + str(args.seed))
+    if args.running_mode in ['train']:
+        wandb.init(project=env_name + 'exploration', settings=wandb.Settings(_disable_stats=True),
+                    entity='hainh22',
+                    group=args.group if args.group is not None else str(args.algo),
+                    name='s' + str(args.seed))
 
     experiment_manager.run(num_updates, start_time)
 

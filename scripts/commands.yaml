@@ -1,0 +1,30 @@
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 0
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 1
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 2
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 3
+
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 0
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 1
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 2
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHeavenHell-v0 --running-mode train --seed 3
+
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 0
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 1
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 2
+python3 main.py --algo ah-cs --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 3
+
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 0
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 1
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 2
+python3 main.py --algo ah-ch --num-env-steps 3000000 --env-name PomdpHallway-v0 --running-mode train --seed 3
+
+python3 main.py --algo ah-cs --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 0
+python3 main.py --algo ah-cs --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 1
+python3 main.py --algo ah-cs --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 2
+python3 main.py --algo ah-cs --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 3
+
+python3 main.py --algo ah-ch --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 0
+python3 main.py --algo ah-ch --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 1
+python3 main.py --algo ah-ch --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 2
+python3 main.py --algo ah-ch --num-env-steps 10000000 --env-name PomdpHallway2-v0 --running-mode train --seed 3
+
