@@ -27,6 +27,10 @@ def get_args():
         default=0.01,
         help='entropy term coefficient (default: 0.01)')
     parser.add_argument(
+        '--policy-file',
+        type=str,
+        default=None)
+    parser.add_argument(
         '--group',
         type=str,
         default=None)    
@@ -71,6 +75,11 @@ def get_args():
         type=int,
         default=100,
         help='save interval, one save per n updates (default: 100)')
+    parser.add_argument(
+        '--eval-interval',
+        type=int,
+        default=100,
+        help='eval interval, one eval per n updates (default: 100)')
     parser.add_argument(
         '--num-env-steps',
         type=int,

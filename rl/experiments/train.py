@@ -27,7 +27,7 @@ class TrainEx:
         self.test_agent = TestAgent(self.test_envs, self.args, self.train_agent.actor_critic.rnn_state_size)
         self.test_agent.evaluate(self.train_agent.actor_critic)
 
-    def _print_train_stat(self, update_str, num_updates, hours):
+    def _print_train_stat(self, update_str, num_updates, hours, enable_wandb):
         episode_rewards, value_loss, action_loss, dist_entropy = self.train_agent.get_statistic()
         if len(episode_rewards) > 1:
             print(update_str)
@@ -37,9 +37,10 @@ class TrainEx:
                         np.max(episode_rewards)))
             print("Policy entropy: {:.3f}, Critic Loss: {:.3f}, Actor Loss {:.3f}\n".format(dist_entropy, value_loss, action_loss))  
 
-            wandb.log({'Mean Returns': np.mean(episode_rewards),
-                       'Hours':  hours}, 
-                       step=num_updates)       
+            if enable_wandb:
+                wandb.log({'Mean Returns': np.mean(episode_rewards),
+                        'Hours':  hours}, 
+                        step=num_updates)       
 
     def _print_test_stat(self, update_str):
         episode_rewards = self.test_agent.get_statistic()
@@ -63,4 +64,7 @@ class TrainEx:
                 end = time.time()
                 status_str = "Updates {}, training timesteps {}, FPS {}".format(n_update, total_num_steps, int(total_num_steps / (end - start)))
                 hours = (end - start) / 3600.0
-                self._print_train_stat(status_str, total_num_steps, hours)
+
+                enable_wandb = self.args.running_mode in ['train']
+
+                self._print_train_stat(status_str, total_num_steps, hours, enable_wandb)

@@ -70,4 +70,14 @@ def env_config(env_name):
 
         return config
 
+    if env_name in ['PomdpHeavenHell-v0']:
+        config['obs_dim'] = 2
+        config['state_size'] = 20 + 1
+        config['obs_size'] = 11
+        config['action_size'] = 4
+        config['discount'] = 0.95
+        config['state_dim'] = 1
+
+        return config
+
     raise NameError('Unknown domain!')
