@@ -1,0 +1,135 @@
+# A robot will be rewarded +1 for attaining heaven in one
+# if it accidently reaches hell it will get -1
+# Problem is attributed to Sebastian Thrun but first appeared in Geffner
+# & Bonet: Solving Large POMDPs using Real Time DP 1998.
+# A priest is available to tell it where heaven is (left or right)
+#
+#        Heaven  4  3  2  5  6  Hell
+#                      1
+#                      0
+#                      7  8  9 Priest
+#
+#          Hell 14 13 12 15 16  Heaven
+#                     11
+#                     10
+#                     17 18 19 Priest
+#
+# Furthermore, the map observations may be noisy. Edit the file to change
+# the level of noise.
+# Heaven is obtained by moving W in state 4 or E in 16 and hell is
+# obtained by moving E in 6 and W in 14. The priest is in 9
+# The agent starts at 0
+
+# This specific file was generated with parameters:
+# Namespace(gamma=0.99, n=2)
+
+discount: 0.99
+values: reward
+states: 20
+actions: N S E W
+observations: o0 o1 o2 o3 o4 o5 o6 o7 o8 left right
+
+start include: 0 10
+
+T: N identity
+T: N: 0: 0 0.0
+T: N: 0: 1 1.0
+T: N: 1: 1 0.0
+T: N: 1: 2 1.0
+T: N: 7: 7 0.0
+T: N: 7: 0 1.0
+T: N: 10: 10 0.0
+T: N: 10: 11 1.0
+T: N: 11: 11 0.0
+T: N: 11: 12 1.0
+T: N: 17: 17 0.0
+T: N: 17: 10 1.0
+T: S identity
+T: S: 0: 0 0.0
+T: S: 0: 7 1.0
+T: S: 1: 1 0.0
+T: S: 1: 0 1.0
+T: S: 2: 2 0.0
+T: S: 2: 1 1.0
+T: S: 10: 10 0.0
+T: S: 10: 17 1.0
+T: S: 11: 11 0.0
+T: S: 11: 10 1.0
+T: S: 12: 12 0.0
+T: S: 12: 11 1.0
+T: E identity
+T: E: 2: 2 0.0
+T: E: 2: 5 1.0
+T: E: 3: 3 0.0
+T: E: 3: 2 1.0
+T: E: 5: 5 0.0
+T: E: 5: 6 1.0
+T: E: 7: 7 0.0
+T: E: 7: 8 1.0
+T: E: 8: 8 0.0
+T: E: 8: 9 1.0
+T: E: 12: 12 0.0
+T: E: 12: 15 1.0
+T: E: 13: 13 0.0
+T: E: 13: 12 1.0
+T: E: 15: 15 0.0
+T: E: 15: 16 1.0
+T: E: 17: 17 0.0
+T: E: 17: 18 1.0
+T: E: 18: 18 0.0
+T: E: 18: 19 1.0
+T: W identity
+T: W: 2: 2 0.0
+T: W: 2: 3 1.0
+T: W: 3: 3 0.0
+T: W: 3: 4 1.0
+T: W: 5: 5 0.0
+T: W: 5: 2 1.0
+T: W: 6: 6 0.0
+T: W: 6: 5 1.0
+T: W: 8: 8 0.0
+T: W: 8: 7 1.0
+T: W: 9: 9 0.0
+T: W: 9: 8 1.0
+T: W: 12: 12 0.0
+T: W: 12: 13 1.0
+T: W: 13: 13 0.0
+T: W: 13: 14 1.0
+T: W: 15: 15 0.0
+T: W: 15: 12 1.0
+T: W: 16: 16 0.0
+T: W: 16: 15 1.0
+T: W: 18: 18 0.0
+T: W: 18: 17 1.0
+T: W: 19: 19 0.0
+T: W: 19: 18 1.0
+T: *: 4 reset
+T: *: 6 reset
+T: *: 14 reset
+T: *: 16 reset
+
+O: *: 0: o0 1.0
+O: *: 1: o1 1.0
+O: *: 2: o2 1.0
+O: *: 3: o3 1.0
+O: *: 4: o4 1.0
+O: *: 5: o5 1.0
+O: *: 6: o6 1.0
+O: *: 7: o7 1.0
+O: *: 8: o8 1.0
+O: *: 9: left 1.0
+O: *: 10: o0 1.0
+O: *: 11: o1 1.0
+O: *: 12: o2 1.0
+O: *: 13: o3 1.0
+O: *: 14: o4 1.0
+O: *: 15: o5 1.0
+O: *: 16: o6 1.0
+O: *: 17: o7 1.0
+O: *: 18: o8 1.0
+O: *: 19: right 1.0
+
+R: *: 4: *: * 1.0
+R: *: 6: *: * -1.0
+R: *: 14: *: * -1.0
+R: *: 16: *: * 1.0

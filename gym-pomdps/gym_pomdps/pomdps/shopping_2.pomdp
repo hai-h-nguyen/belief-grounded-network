@@ -1,0 +1,206 @@
+# Shopping Environment;
+
+# The agent is in a store and needs to remember which item to purchase
+# (preselected at the beginning of the environment).  A reactive policy with
+# insufficient memory will need to periodically query which item needs to be
+# purchased.
+
+# State-space (n ** 4) : position of the agent in the store (n ** 2 grid), and
+# position of the target item in store (n ** 2 grid).
+
+# Action-space (6) : movements in 4 directions {`left`, `right`, `up`,
+# `down`}, call home to observe target item {`query`}, and purchase item in
+# current cell {`buy`}.
+
+# Observation-space (n ** 2) : if `query` action is selected, position of item;
+# otherwise position of agent.
+
+# This specific file was generated with parameters:
+# Namespace(gamma=0.99, n=2)
+
+discount: 0.99
+values: reward
+states: 16
+actions: query left right up down buy
+observations: 4
+
+start include: 0 1 2 3
+
+T: query identity
+T: left: 0: 0 1.0
+T: left: 1: 1 1.0
+T: left: 2: 2 1.0
+T: left: 3: 3 1.0
+T: left: 4: 4 1.0
+T: left: 5: 5 1.0
+T: left: 6: 6 1.0
+T: left: 7: 7 1.0
+T: left: 8: 0 1.0
+T: left: 9: 1 1.0
+T: left: 10: 2 1.0
+T: left: 11: 3 1.0
+T: left: 12: 4 1.0
+T: left: 13: 5 1.0
+T: left: 14: 6 1.0
+T: left: 15: 7 1.0
+T: right: 0: 8 1.0
+T: right: 1: 9 1.0
+T: right: 2: 10 1.0
+T: right: 3: 11 1.0
+T: right: 4: 12 1.0
+T: right: 5: 13 1.0
+T: right: 6: 14 1.0
+T: right: 7: 15 1.0
+T: right: 8: 8 1.0
+T: right: 9: 9 1.0
+T: right: 10: 10 1.0
+T: right: 11: 11 1.0
+T: right: 12: 12 1.0
+T: right: 13: 13 1.0
+T: right: 14: 14 1.0
+T: right: 15: 15 1.0
+T: up: 0: 0 1.0
+T: up: 1: 1 1.0
+T: up: 2: 2 1.0
+T: up: 3: 3 1.0
+T: up: 4: 0 1.0
+T: up: 5: 1 1.0
+T: up: 6: 2 1.0
+T: up: 7: 3 1.0
+T: up: 8: 8 1.0
+T: up: 9: 9 1.0
+T: up: 10: 10 1.0
+T: up: 11: 11 1.0
+T: up: 12: 8 1.0
+T: up: 13: 9 1.0
+T: up: 14: 10 1.0
+T: up: 15: 11 1.0
+T: down: 0: 4 1.0
+T: down: 1: 5 1.0
+T: down: 2: 6 1.0
+T: down: 3: 7 1.0
+T: down: 4: 4 1.0
+T: down: 5: 5 1.0
+T: down: 6: 6 1.0
+T: down: 7: 7 1.0
+T: down: 8: 12 1.0
+T: down: 9: 13 1.0
+T: down: 10: 14 1.0
+T: down: 11: 15 1.0
+T: down: 12: 12 1.0
+T: down: 13: 13 1.0
+T: down: 14: 14 1.0
+T: down: 15: 15 1.0
+T: buy identity
+T: buy: 0 reset
+T: buy: 5 reset
+T: buy: 10 reset
+T: buy: 15 reset
+
+O: query: 0: 0 1.0
+O: query: 1: 1 1.0
+O: query: 2: 2 1.0
+O: query: 3: 3 1.0
+O: query: 4: 0 1.0
+O: query: 5: 1 1.0
+O: query: 6: 2 1.0
+O: query: 7: 3 1.0
+O: query: 8: 0 1.0
+O: query: 9: 1 1.0
+O: query: 10: 2 1.0
+O: query: 11: 3 1.0
+O: query: 12: 0 1.0
+O: query: 13: 1 1.0
+O: query: 14: 2 1.0
+O: query: 15: 3 1.0
+O: left: 0: 0 1.0
+O: left: 1: 0 1.0
+O: left: 2: 0 1.0
+O: left: 3: 0 1.0
+O: left: 4: 1 1.0
+O: left: 5: 1 1.0
+O: left: 6: 1 1.0
+O: left: 7: 1 1.0
+O: left: 8: 2 1.0
+O: left: 9: 2 1.0
+O: left: 10: 2 1.0
+O: left: 11: 2 1.0
+O: left: 12: 3 1.0
+O: left: 13: 3 1.0
+O: left: 14: 3 1.0
+O: left: 15: 3 1.0
+O: right: 0: 0 1.0
+O: right: 1: 0 1.0
+O: right: 2: 0 1.0
+O: right: 3: 0 1.0
+O: right: 4: 1 1.0
+O: right: 5: 1 1.0
+O: right: 6: 1 1.0
+O: right: 7: 1 1.0
+O: right: 8: 2 1.0
+O: right: 9: 2 1.0
+O: right: 10: 2 1.0
+O: right: 11: 2 1.0
+O: right: 12: 3 1.0
+O: right: 13: 3 1.0
+O: right: 14: 3 1.0
+O: right: 15: 3 1.0
+O: up: 0: 0 1.0
+O: up: 1: 0 1.0
+O: up: 2: 0 1.0
+O: up: 3: 0 1.0
+O: up: 4: 1 1.0
+O: up: 5: 1 1.0
+O: up: 6: 1 1.0
+O: up: 7: 1 1.0
+O: up: 8: 2 1.0
+O: up: 9: 2 1.0
+O: up: 10: 2 1.0
+O: up: 11: 2 1.0
+O: up: 12: 3 1.0
+O: up: 13: 3 1.0
+O: up: 14: 3 1.0
+O: up: 15: 3 1.0
+O: down: 0: 0 1.0
+O: down: 1: 0 1.0
+O: down: 2: 0 1.0
+O: down: 3: 0 1.0
+O: down: 4: 1 1.0
+O: down: 5: 1 1.0
+O: down: 6: 1 1.0
+O: down: 7: 1 1.0
+O: down: 8: 2 1.0
+O: down: 9: 2 1.0
+O: down: 10: 2 1.0
+O: down: 11: 2 1.0
+O: down: 12: 3 1.0
+O: down: 13: 3 1.0
+O: down: 14: 3 1.0
+O: down: 15: 3 1.0
+O: buy: 0: 0 1.0
+O: buy: 1: 0 1.0
+O: buy: 2: 0 1.0
+O: buy: 3: 0 1.0
+O: buy: 4: 1 1.0
+O: buy: 5: 1 1.0
+O: buy: 6: 1 1.0
+O: buy: 7: 1 1.0
+O: buy: 8: 2 1.0
+O: buy: 9: 2 1.0
+O: buy: 10: 2 1.0
+O: buy: 11: 2 1.0
+O: buy: 12: 3 1.0
+O: buy: 13: 3 1.0
+O: buy: 14: 3 1.0
+O: buy: 15: 3 1.0
+
+R: query: *: *: * -2.0
+R: left: *: *: * -1.0
+R: right: *: *: * -1.0
+R: up: *: *: * -1.0
+R: down: *: *: * -1.0
+R: buy: *: *: * -5.0
+R: buy: 0: *: * 10.0
+R: buy: 5: *: * 10.0
+R: buy: 10: *: * 10.0
+R: buy: 15: *: * 10.0

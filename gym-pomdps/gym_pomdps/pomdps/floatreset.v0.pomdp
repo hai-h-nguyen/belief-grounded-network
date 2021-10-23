@@ -1,0 +1,47 @@
+# Float/Reset Environment;
+
+# @inproceedings{littman_predictive_2002,
+#     title = {Predictive representations of state},
+#     booktitle = {Advances in neural information processing systems},
+#     author = {Littman, Michael L. and Sutton, Richard S.},
+#     year = {2002},
+#     pages = {1555--1561},
+# }
+
+# State-space (5) : current position.
+
+# Action-space (2) : `f` and `r`.
+
+# Observation-space (2) : 0 and 1.
+
+# This specific file was generated with parameters:
+# Namespace(gamma=0.99)
+
+discount: 0.99
+values: reward
+states: 5
+actions: f r
+observations: 2
+
+start: 0
+
+T: r: *: 0 1.0
+T: f: 0: 0 0.5
+T: f: 0: 1 0.5
+T: f: 1: 0 0.5
+T: f: 1: 2 0.5
+T: f: 2: 1 0.5
+T: f: 2: 3 0.5
+T: f: 3: 2 0.5
+T: f: 3: 4 0.5
+T: f: 4: 3 0.5
+T: f: 4: 4 0.5
+
+O: * : * 1.0 0.0
+OO: r : 0 : 0 0.0 1.0
+
+R: r: 0: *: * 0.0
+R: r: 1: *: * 1.0
+R: r: 2: *: * 2.0
+R: r: 3: *: * 3.0
+R: r: 4: *: * 4.0

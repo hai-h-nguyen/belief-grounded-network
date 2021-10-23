@@ -3,3 +3,4 @@ __pycache__/
 wandb/
 logs/
 *-info/
+settings.json
