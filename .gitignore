@@ -2,3 +2,4 @@
 *.mdl
 __pycache__/
 wandb
+*.exp

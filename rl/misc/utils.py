@@ -158,7 +158,7 @@ def env_config(env_name):
         return config    
 
     if env_name in ['MomdpTopPlate-v0']:
-        config['belief_dim'] = 10
+        config['belief_dim'] = 15
         config['n_known_states'] = 0
         config['obs_dim'] = 3
         config['obs_size'] = -1
