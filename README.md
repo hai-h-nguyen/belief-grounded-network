@@ -42,7 +42,7 @@ This is the repo stored the code for our paper [Belief-Grounded Network for Acce
 
 ## Train
 
-* Algorithm names: `ab-cb, ah-cb, ah-ch, ah-cs`
+* Algorithm names: `ah-ch, ah-cs`
 * Domain names: `PomdpHallway-v0, PomdpHallway-v2, PomdpRs44-v0, PomdpRS55-v0, MomdpBumps-v0, MomdpPlates-v0, MomdpTopPlate-v0`
 * Running modes: train, simulate (replay a policy)
 * Command (tee is to save the output to a file for plotting later): 

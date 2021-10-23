@@ -1,5 +1,4 @@
 from rl.misc import utils
-from .clone import CloneEx
 from .simulate import SimulateEx
 from .train import TrainEx
 
@@ -37,10 +36,6 @@ class ExperimentManager:
 
         if (self.args.running_mode == 'train'):
             experiment = TrainEx(self.args, self.log_dir)
-            experiment.run(num_updates, start_time)
-
-        if (self.args.running_mode == 'clone'):
-            experiment = CloneEx(self.args)
-            experiment.run()                    
+            experiment.run(num_updates, start_time)                
 
 

@@ -7,8 +7,6 @@ def get_args():
     parser.add_argument(
         '--lr', type=float, default=7e-4, help='learning rate (default: 7e-4)')
     parser.add_argument(
-        '--bc-lr', type=float, default=1e-3, help='behavior cloning lr')        
-    parser.add_argument(
         '--eps',
         type=float,
         default=1e-5,
@@ -18,16 +16,6 @@ def get_args():
         type=float,
         default=0.99,
         help='RMSprop optimizer apha (default: 0.99)')
-    parser.add_argument(
-        '--belief-loss-coef',
-        type=float,
-        default=0.0,
-        help='belief loss term coefficient (default: 0.0)')
-    parser.add_argument(
-        '--n-reactive',
-        type=int,
-        default=1,
-        help='number of reactive steps')
     parser.add_argument(
         '--gae-lambda',
         type=float,
@@ -39,13 +27,9 @@ def get_args():
         default=0.01,
         help='entropy term coefficient (default: 0.01)')
     parser.add_argument(
-        '--policy-file',
+        '--group',
         type=str,
-        default=None)
-    parser.add_argument(
-        '--transitions-file',
-        type=str,
-        default=None)        
+        default=None)    
     parser.add_argument(
         '--running-mode',
         type=str,
@@ -73,18 +57,10 @@ def get_args():
         default=16,
         help='how many training CPU processes to use (default: 16)')
     parser.add_argument(
-        '--bc-num-epochs',
-        type=int,
-        default=50)
-    parser.add_argument(
         '--num-steps',
         type=int,
         default=5,
-        help='number of forward steps in A2C (default: 5)')
-    parser.add_argument(
-        '--bc-batch-size',
-        type=int,
-        default=5)        
+        help='number of forward steps in A2C (default: 5)')   
     parser.add_argument(
         '--log-interval',
         type=int,
@@ -96,18 +72,13 @@ def get_args():
         default=100,
         help='save interval, one save per n updates (default: 100)')
     parser.add_argument(
-        '--eval-interval',
-        type=int,
-        default=None,
-        help='eval interval, one eval per n updates (default: None)')
-    parser.add_argument(
         '--num-env-steps',
         type=int,
         default=1e6,
-        help='number of environment steps to train (default: 10e6)')
+        help='number of environment steps to train (default: 1e6)')
     parser.add_argument(
         '--env-name',
-        default='PomdpBumps-v0')
+        default='PomdpHallway-v0')
     parser.add_argument(
         '--log-dir',
         default='/tmp/gym/',

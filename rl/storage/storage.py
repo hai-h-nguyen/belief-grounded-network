@@ -6,10 +6,9 @@ class RolloutStorage(object):
         num_steps = args.num_steps
         num_processes = args.num_processes
 
-        self.obs = torch.zeros(num_steps + 1, num_processes, args.n_reactive * config['obs_dim'])
+        self.obs = torch.zeros(num_steps + 1, num_processes, config['obs_dim'])
 
         self.state = torch.zeros(num_steps + 1, num_processes, config['state_dim'])
-        self.belief = torch.zeros(num_steps + 1, num_processes, config['belief_dim'])
 
         if embed:
             self.obs = self.obs.long()
@@ -39,7 +38,6 @@ class RolloutStorage(object):
         self.obs = self.obs.to(device)
 
         self.state = self.state.to(device)
-        self.belief = self.belief.to(device)
 
         self.actor_rnn_states = self.actor_rnn_states.to(device)
         self.critic_rnn_states = self.critic_rnn_states.to(device)
@@ -52,13 +50,12 @@ class RolloutStorage(object):
         self.masks = self.masks.to(device)
         self.bad_masks = self.bad_masks.to(device)
 
-    def insert(self, obs, state, belief, actor_hidden_states, critic_hidden_states, actions, action_log_probs,
+    def insert(self, obs, state, actor_hidden_states, critic_hidden_states, actions, action_log_probs,
                value_preds, rewards, masks, bad_masks):
 
         self.obs[self.step + 1].copy_(obs)
 
         self.state[self.step + 1].copy_(state)
-        self.belief[self.step + 1].copy_(belief)
 
         self.actor_rnn_states[self.step + 1].copy_(actor_hidden_states)
 
@@ -88,7 +85,6 @@ class RolloutStorage(object):
         self.obs[0].copy_(self.obs[-1])
 
         self.state[0].copy_(self.state[-1])
-        self.belief[0].copy_(self.belief[-1])
 
         self.actor_rnn_states[0].copy_(self.actor_rnn_states[-1])
         self.critic_rnn_states[0].copy_(self.critic_rnn_states[-1])

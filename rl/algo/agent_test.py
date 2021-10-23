@@ -23,11 +23,9 @@ class TestAgent:
 
         obs = self.envs.reset()
         state = self.envs.get_state()
-        belief = self.envs.get_belief()
 
         self.rollouts.obs[0].copy_(obs)
         self.rollouts.state[0].copy_(state)
-        self.rollouts.belief[0].copy_(belief)
 
         self.rollouts.to(self.device)              
 
@@ -41,12 +39,10 @@ class TestAgent:
             obs, reward, done, infos = self.envs.step(action)
 
             state_ts = torch.empty((self.args.num_processes, self.config['state_dim']), dtype=torch.float)
-            belief_ts = torch.empty((self.args.num_processes, self.config['belief_dim']), dtype=torch.float)
             index = 0
 
             for info in infos:
                 state_ts[index] = torch.FloatTensor(info['curr_state'])
-                belief_ts[index] = torch.FloatTensor(info['belief'])
                 index += 1
                     
                 if 'episode' in info.keys():
@@ -58,7 +54,7 @@ class TestAgent:
             bad_masks = torch.FloatTensor(
                 [[0.0] if 'bad_transition' in info.keys() else [1.0] for info in infos])
 
-            self.rollouts.insert(obs, state_ts, belief_ts, actor_hidden, critic_hidden, action,
+            self.rollouts.insert(obs, state_ts, actor_hidden, critic_hidden, action,
                         action_log_prob, value, reward, masks, bad_masks)            
 
     def evaluate(self, actor_critic):

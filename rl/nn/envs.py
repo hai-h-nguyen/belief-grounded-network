@@ -11,17 +11,15 @@ from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 from baselines.common.vec_env.shmem_vec_env import ShmemVecEnv
 from baselines.common.vec_env.vec_normalize import VecNormalize as VecNormalize_
 
-def make_env(env_id, seed, rank, log_dir, allow_early_resets, n_reactive):
+from rl.domains import *
+
+def make_env(env_id, seed, rank, log_dir, allow_early_resets):
     def _thunk():
         env = gym.make(env_id)
         env.seed(seed + rank)
 
         if str(env.__class__.__name__).find('TimeLimit') >= 0:
             env = TimeLimitMask(env)
-
-        if n_reactive > 1:
-            # Reactive policy needs fixed-length histories
-            env = HistoryWrapper(env, n_reactive)
 
         if log_dir is not None:
             env = bench.Monitor(
@@ -35,7 +33,7 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets, n_reactive):
 
 def make_vec_envs(args, allow_early_resets, seed_change=0):
     envs = [
-        make_env(args.env_name, args.seed + seed_change, i, args.log_dir, allow_early_resets, args.n_reactive)
+        make_env(args.env_name, args.seed + seed_change, i, args.log_dir, allow_early_resets)
         for i in range(0, args.num_processes)
     ]
 
@@ -84,12 +82,6 @@ class VecPyTorch(VecEnvWrapper):
         state = np.vstack(state)
         state = torch.from_numpy(state).float().to(self.device)
         return state
-
-    def get_belief(self):
-        belief = self.venv.get_belief()
-        belief = np.vstack(belief)
-        belief = torch.from_numpy(belief).float().to(self.device)
-        return belief        
 
     def step_async(self, actions):
         if isinstance(actions, torch.LongTensor):

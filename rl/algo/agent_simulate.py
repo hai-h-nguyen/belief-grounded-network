@@ -28,21 +28,11 @@ class SimulateAgent:
 
         self.rollouts = RolloutStorage(self.args, self.config, self.actor_critic.rnn_state_size, self.is_embed)
 
-        # Turn this on to save reconstructed beliefs to text files
-        self.log_est_belief = True
-        self.traj_cnt = 0
-
-        if self.log_est_belief:
-            self.actor_belief_file = open('ab' + str(self.traj_cnt) + ".txt","w")
-            self.critic_belief_file = open('cb' + str(self.traj_cnt) + ".txt","w")
-
         obs = self.envs.reset()
         state = self.envs.get_state()
-        belief = self.envs.get_belief()
 
         self.rollouts.obs[0].copy_(obs)
         self.rollouts.state[0].copy_(state)
-        self.rollouts.belief[0].copy_(belief)
 
         self.rollouts.to('cpu')    
 
@@ -61,35 +51,14 @@ class SimulateAgent:
                 value, action, action_log_prob, actor_hidden, critic_hidden = actor_critic.act(self.rollouts, step, self.args, deterministic=True)
                 inputs = self._prepare_inputs()
 
-                if self.log_est_belief:
-                    m = nn.Softmax(dim=-1)
-
-                    _, _, _, actor_belief_recon, critic_belief_recon = self.actor_critic.evaluate_actions(*inputs)
-                    actor_belief_recon = m(actor_belief_recon)
-                    actor_belief_recon = actor_belief_recon.numpy().flatten()
-
-                    critic_belief_recon = m(critic_belief_recon)
-                    critic_belief_recon = critic_belief_recon.numpy().flatten()
-                
-                    self.actor_belief_file.write(';'.join(['%.5f' % num for num in actor_belief_recon]) + '\n')
-                    self.critic_belief_file.write(';'.join(['%.5f' % num for num in critic_belief_recon]) + '\n')
-
             # Observe reward and next obs
             obs, reward, done, infos = self.envs.step(action)
 
-            if self.log_est_belief and done:
-                self.traj_cnt += 1
-
-                self.actor_belief_file = open('ab' + str(self.traj_cnt) + ".txt","w")
-                self.critic_belief_file = open('cb' + str(self.traj_cnt) + ".txt","w")
-
             state_ts = torch.empty((self.args.num_processes, self.config['state_dim']), dtype=torch.float)
-            belief_ts = torch.empty((self.args.num_processes, self.config['belief_dim']), dtype=torch.float)
             index = 0
 
             for info in infos:
                 state_ts[index] = torch.FloatTensor(info['curr_state'])
-                belief_ts[index] = torch.FloatTensor(info['belief'])
                 index += 1
                     
                 if 'episode' in info.keys():
@@ -101,7 +70,7 @@ class SimulateAgent:
             bad_masks = torch.FloatTensor(
                 [[0.0] if 'bad_transition' in info.keys() else [1.0] for info in infos])
 
-            self.rollouts.insert(obs, state_ts, belief_ts, actor_hidden, critic_hidden, action,
+            self.rollouts.insert(obs, state_ts, actor_hidden, critic_hidden, action,
                         action_log_prob, value, reward, masks, bad_masks)            
 
     def simulate(self):

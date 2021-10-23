@@ -33,41 +33,6 @@ class NNBase(nn.Module):
         return forward_gru(self.gru, x, hxs, masks)
 
 
-class NNDualBase(nn.Module):
-    def __init__(self, recurrent_actor_size, recurrent_critic_size, hidden_size):
-        super(NNDualBase, self).__init__()
-
-        self._hidden_size = hidden_size
-
-        self.gru_actor = nn.GRU(recurrent_actor_size, hidden_size)
-        for name, param in self.gru_actor.named_parameters():
-            if 'bias' in name:
-                nn.init.constant_(param, 0)
-            elif 'weight' in name:
-                nn.init.orthogonal_(param)
-
-        self.gru_critic = nn.GRU(recurrent_critic_size, hidden_size)
-        for name, param in self.gru_critic.named_parameters():
-            if 'bias' in name:
-                nn.init.constant_(param, 0)
-            elif 'weight' in name:
-                nn.init.orthogonal_(param)
-
-    @property
-    def rnn_state_size(self):
-        return self._hidden_size
-
-    @property
-    def output_size(self):
-        return self._hidden_size
-
-    def _forward_gru_actor(self, x, hxs, masks):
-        return forward_gru(self.gru_actor, x, hxs, masks)
-
-    def _forward_gru_critic(self, x, hxs, masks):
-        return forward_gru(self.gru_critic, x, hxs, masks)
-
-
 def forward_gru(gru, x, hxs, masks):
     if x.size(0) == hxs.size(0):
         x, hxs = gru(x.unsqueeze(0), (hxs * masks).unsqueeze(0))

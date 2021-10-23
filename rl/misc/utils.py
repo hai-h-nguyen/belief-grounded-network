@@ -50,33 +50,7 @@ def bind(*inputs):
 def env_config(env_name):
     config = {}
 
-    if  env_name in ['PomdpRs44-v0']: 
-        config['belief_dim'] = 257
-        config['n_known_states'] = 0
-        config['obs_size'] = 2
-        config['obs_dim'] = 2
-        config['state_size'] = 257 + 1
-        config['action_size'] = 9
-        config['state_dim'] = 1
-        config['discount'] = 0.95
-        
-        return config
-
-    if  env_name in ['PomdpRs55-v0']:        
-        config['belief_dim'] = 801
-        config['n_known_states'] = 0
-        config['obs_size'] = 2
-        config['obs_dim'] = 2
-        config['state_size'] = 801 + 1
-        config['action_size'] = 10
-        config['state_dim'] = 1
-        config['discount'] = 0.95
-
-        return config
-
     if  env_name in ['PomdpHallway2-v0']:
-        config['belief_dim'] = 92
-        config['n_known_states'] = 0
         config['obs_dim'] = 2
         config['obs_size'] = 17
         config['action_size'] = 5
@@ -87,8 +61,6 @@ def env_config(env_name):
         return config
 
     if env_name in ['PomdpHallway-v0']:
-        config['belief_dim'] = 60
-        config['n_known_states'] = 0
         config['obs_dim'] = 2
         config['state_size'] = 60 + 1
         config['obs_size'] = 21
@@ -97,39 +69,5 @@ def env_config(env_name):
         config['state_dim'] = 1
 
         return config
-
-    if env_name in ['MomdpBumps1d-v0']:
-        config['belief_dim'] = 227
-        config['n_known_states'] = 2
-        config['obs_dim'] = 3
-        config['obs_size'] = -1
-        config['action_size'] = 4
-        config['discount'] = 0.99
-        config['state_dim'] = 4
-
-        return config
-
-    if env_name in ['MomdpBumps2d-v0']:
-        config['belief_dim'] = 259
-        config['n_known_states'] = 0
-        config['obs_dim'] = 4
-        config['state_size'] = 259 + 1
-        config['obs_size'] = -1
-        config['action_size'] = 5
-        config['discount'] = 0.99
-        config['state_dim'] = 7
-
-        return config        
-
-    if env_name in ['MomdpTopPlate-v0']:
-        config['belief_dim'] = 10
-        config['n_known_states'] = 0
-        config['obs_dim'] = 3
-        config['obs_size'] = -1
-        config['action_size'] = 3
-        config['discount'] = 0.99
-        config['state_dim'] = 3
-
-        return config               
 
     raise NameError('Unknown domain!')
