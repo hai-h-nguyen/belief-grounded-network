@@ -10,18 +10,15 @@
 
 ## Setup
 
-- Install gym-pomdps from `https://github.com/abaisero/gym-pomdps` by `pip install -e .`
-- Install dependency: `pip install -r requirements.txt`
+- Install gym-pomdps in the corresponding folder by `pip install -e .`
+- Install bgn: `pip install -r requirements.txt`
 - Install MuJoCo
 - After that
-  - Copy `.pomdp` domain files in folder `domains/pomdp_files` to `gym_pomdps/pomdps`
   - Copy the domains' folders in `domains/pomdp_files` to `gym/envs/`
-  - Register new domains with `gym` by adding the content in `modifications/__init__.py` to `gym/envs/__init__.py`
-  - Modify several `baselines` files as in the folder `modifications`
+  - Install openai baselines and override the following files with the ones inside `modifications/`
     * `baselines/bench/monitor.py` - adding discounted reward calculation
-    * `baselines/common/vec_env/dummy_vec_env.py` - adding get states and get belief functions
-    * `baselines/common/vec_env/shmem_vec_env.py` - adding get states and get belief functions
-  - Modify line 96 in `gym-pomdps/gym_pomdps/pomdp.py` from `state_next = -1` to `state_next = self.state_space.n`
+    * `baselines/common/vec_env/dummy_vec_env.py` - adding get states
+    * `baselines/common/vec_env/shmem_vec_env.py` - adding get states
 
 ---
 
