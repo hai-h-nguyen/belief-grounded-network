@@ -1,0 +1,147 @@
+Make env training
+Logging to /tmp/openai-2022-02-28-12-45-40-120148
+Creating dummy env object to get spaces
+Updates 20, training timesteps 1680, FPS 762
+Last 16 training episodes: mean/median reward 0.00/0.00, min/max 0.0/0.0
+Policy entropy: 1.544, Critic Loss: 0.018, Actor Loss 0.182
+
+Updates 30, training timesteps 2480, FPS 1007
+Last 19 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.2
+Policy entropy: 1.191, Critic Loss: 0.000, Actor Loss -0.016
+
+Updates 40, training timesteps 3280, FPS 1206
+Last 32 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.2
+Policy entropy: 1.553, Critic Loss: 0.003, Actor Loss -0.002
+
+Updates 50, training timesteps 4080, FPS 1369
+Last 35 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.2
+Policy entropy: 1.592, Critic Loss: 0.000, Actor Loss 0.005
+
+Updates 60, training timesteps 4880, FPS 1513
+Last 49 training episodes: mean/median reward 0.01/0.00, min/max 0.0/0.2
+Policy entropy: 1.517, Critic Loss: 0.001, Actor Loss 0.025
+
+Updates 70, training timesteps 5680, FPS 1635
+Last 53 training episodes: mean/median reward 0.03/0.00, min/max 0.0/0.7
+Policy entropy: 1.492, Critic Loss: 0.000, Actor Loss -0.003
+
+Updates 80, training timesteps 6480, FPS 1742
+Last 66 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.594, Critic Loss: 0.000, Actor Loss -0.002
+
+Updates 90, training timesteps 7280, FPS 1835
+Last 70 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.579, Critic Loss: 0.000, Actor Loss -0.000
+
+Updates 100, training timesteps 8080, FPS 1909
+Last 82 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.595, Critic Loss: 0.001, Actor Loss -0.034
+
+Updates 110, training timesteps 8880, FPS 1981
+Last 86 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.604, Critic Loss: 0.000, Actor Loss -0.012
+
+Updates 120, training timesteps 9680, FPS 2047
+Last 98 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.602, Critic Loss: 0.000, Actor Loss -0.010
+
+Updates 130, training timesteps 10480, FPS 2106
+Last 100 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.601, Critic Loss: 0.000, Actor Loss -0.023
+
+Updates 140, training timesteps 11280, FPS 2156
+Last 100 training episodes: mean/median reward 0.02/0.00, min/max 0.0/0.7
+Policy entropy: 1.597, Critic Loss: 0.000, Actor Loss -0.008
+
+Updates 150, training timesteps 12080, FPS 2203
+Last 100 training episodes: mean/median reward 0.01/0.00, min/max 0.0/0.7
+Policy entropy: 1.576, Critic Loss: 0.000, Actor Loss 0.025
+
+Updates 160, training timesteps 12880, FPS 2247
+Last 100 training episodes: mean/median reward 0.02/0.00, min/max 0.0/1.0
+Policy entropy: 1.397, Critic Loss: 0.011, Actor Loss 0.038
+
+Updates 170, training timesteps 13680, FPS 2288
+Last 100 training episodes: mean/median reward 0.03/0.00, min/max 0.0/1.0
+Policy entropy: 1.594, Critic Loss: 0.000, Actor Loss 0.020
+
+Updates 180, training timesteps 14480, FPS 2326
+Last 100 training episodes: mean/median reward 0.03/0.00, min/max 0.0/1.0
+Policy entropy: 1.601, Critic Loss: 0.000, Actor Loss -0.013
+
+Updates 190, training timesteps 15280, FPS 2361
+Last 100 training episodes: mean/median reward 0.02/0.00, min/max 0.0/1.0
+Policy entropy: 1.603, Critic Loss: 0.000, Actor Loss -0.003
+
+Updates 200, training timesteps 16080, FPS 2387
+Last 100 training episodes: mean/median reward 0.03/0.00, min/max 0.0/1.0
+Policy entropy: 1.595, Critic Loss: 0.011, Actor Loss 0.048
+
+Updates 210, training timesteps 16880, FPS 2417
+Last 100 training episodes: mean/median reward 0.03/0.00, min/max 0.0/1.0
+Policy entropy: 1.604, Critic Loss: 0.000, Actor Loss 0.004
+
+Updates 220, training timesteps 17680, FPS 2443
+Last 100 training episodes: mean/median reward 0.04/0.00, min/max 0.0/1.0
+Policy entropy: 1.160, Critic Loss: 0.001, Actor Loss -0.033
+
+Updates 230, training timesteps 18480, FPS 2470
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/1.0
+Policy entropy: 1.586, Critic Loss: 0.000, Actor Loss 0.002
+
+Updates 240, training timesteps 19280, FPS 2493
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/1.0
+Policy entropy: 1.597, Critic Loss: 0.000, Actor Loss 0.005
+
+Updates 250, training timesteps 20080, FPS 2512
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/1.0
+Policy entropy: 1.575, Critic Loss: 0.000, Actor Loss -0.000
+
+Updates 260, training timesteps 20880, FPS 2528
+Last 100 training episodes: mean/median reward 0.06/0.00, min/max 0.0/1.0
+Policy entropy: 1.561, Critic Loss: 0.000, Actor Loss -0.016
+
+Updates 270, training timesteps 21680, FPS 2547
+Last 100 training episodes: mean/median reward 0.07/0.00, min/max 0.0/1.0
+Policy entropy: 1.326, Critic Loss: 0.001, Actor Loss -0.042
+
+Updates 280, training timesteps 22480, FPS 2564
+Last 100 training episodes: mean/median reward 0.06/0.00, min/max 0.0/0.9
+Policy entropy: 1.562, Critic Loss: 0.000, Actor Loss 0.002
+
+Updates 290, training timesteps 23280, FPS 2579
+Last 100 training episodes: mean/median reward 0.06/0.00, min/max 0.0/0.9
+Policy entropy: 1.289, Critic Loss: 0.001, Actor Loss -0.049
+
+Updates 300, training timesteps 24080, FPS 2592
+Last 100 training episodes: mean/median reward 0.06/0.00, min/max 0.0/0.9
+Policy entropy: 1.563, Critic Loss: 0.000, Actor Loss -0.002
+
+Updates 310, training timesteps 24880, FPS 2604
+Last 100 training episodes: mean/median reward 0.06/0.00, min/max 0.0/0.9
+Policy entropy: 1.526, Critic Loss: 0.018, Actor Loss 0.068
+
+Updates 320, training timesteps 25680, FPS 2617
+Last 100 training episodes: mean/median reward 0.07/0.00, min/max 0.0/0.9
+Policy entropy: 1.486, Critic Loss: 0.001, Actor Loss -0.062
+
+Updates 330, training timesteps 26480, FPS 2627
+Last 100 training episodes: mean/median reward 0.06/0.00, min/max 0.0/0.9
+Policy entropy: 1.587, Critic Loss: 0.000, Actor Loss 0.001
+
+Updates 340, training timesteps 27280, FPS 2637
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/0.9
+Policy entropy: 1.584, Critic Loss: 0.000, Actor Loss -0.000
+
+Updates 350, training timesteps 28080, FPS 2647
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/0.9
+Policy entropy: 1.597, Critic Loss: 0.022, Actor Loss 0.072
+
+Updates 360, training timesteps 28880, FPS 2657
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/0.9
+Policy entropy: 1.570, Critic Loss: 0.000, Actor Loss -0.000
+
+Updates 370, training timesteps 29680, FPS 2669
+Last 100 training episodes: mean/median reward 0.05/0.00, min/max 0.0/0.9
+Policy entropy: 1.598, Critic Loss: 0.000, Actor Loss 0.000
+
