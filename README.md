@@ -3,11 +3,21 @@
 This is the repo stored the code for our paper [Belief-Grounded Network for Accelerated Robot Learning under Partial Observability](https://arxiv.org/abs/2010.09170) accepted at CoRL 2020. This is a joint repo contributed with [Brett](https://github.com/brett-daley) and [Song](https://github.com/xinchaosong). Project [website](https://sites.google.com/view/bgn-pomdp). If you use this repository in published work, please cite the paper:
 
 ```
-@article{nguyen2020belief,
-  title={Belief-Grounded Networks for Accelerated Robot Learning under Partial Observability},
-  author={Nguyen, Hai and Daley, Brett and Song, Xinchao and Amato, Christopher and Platt, Robert},
-  journal={arXiv preprint arXiv:2010.09170},
-  year={2020}
+
+@InProceedings{pmlr-v155-nguyen21a,
+  title = 	 {Belief-Grounded Networks for Accelerated Robot Learning under Partial Observability},
+  author =       {Nguyen, Hai and Daley, Brett and Song, Xinchao and Amato, Christopher and Platt, Robert},
+  booktitle = 	 {Proceedings of the 2020 Conference on Robot Learning},
+  pages = 	 {1640--1653},
+  year = 	 {2021},
+  editor = 	 {Kober, Jens and Ramos, Fabio and Tomlin, Claire},
+  volume = 	 {155},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {16--18 Nov},
+  publisher =    {PMLR},
+  pdf = 	 {https://proceedings.mlr.press/v155/nguyen21a/nguyen21a.pdf},
+  url = 	 {https://proceedings.mlr.press/v155/nguyen21a.html},
+  abstract = 	 {Many important robotics problems are partially observable where a single visual or force-feedback measurement is insufficient to reconstruct the state. Standard approaches involve learning a policy over beliefs or observation-action histories.    However, both of these have drawbacks; it is expensive to track the belief online, and it is hard to learn policies directly over histories. We propose a method for policy learning under partial observability called the Belief-Grounded Network (BGN) in which an auxiliary belief-reconstruction loss incentivizes a neural network to concisely summarize its input history. Since the resulting policy is a function of the history rather than the belief, it can be executed easily at runtime. We compare BGN against several baselines on classic benchmark tasks as well as three novel robotic force-feedback tasks. BGN outperforms all other tested methods and its learned policies work well when transferred onto a physical robot.}
 }
 ```
 ---
